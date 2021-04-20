@@ -1,6 +1,7 @@
 """This is what brings the application together"""
 from flask import Flask, render_template
 from .models import DB, User
+from .twitter import add_or_update_user
 
 
 def create_app():
@@ -22,23 +23,17 @@ def create_app():
         DB.drop_all()
         # Creates DB
         DB.create_all()
-        insert_example_users()
         return render_template('base.html', title="Home")
 
-    @app.route('/hola')
-    def hola():
-        return "hola, Twitoff"
+    @app.route('/reset')
+    def reset():
+        DB.drop_all()
+        DB.create_all()
+        return "Database reset!"
 
-    @app.route('/salut')
-    def salut():
-        return "salut, Twitoff"
+    @app.route('/addusers')
+    def add_users():
+        # adding users
+        add_or_update_user("elonmusk")
+
     return app
-
-
-def insert_example_users():
-    """Will insert two hypothetical users we've made"""
-    nick = User(id=1, name="nick")
-    elon = User(id=2, name="elonmusk")
-    DB.session.add(nick)
-    DB.session.add(elon)
-    DB.session.commit()
