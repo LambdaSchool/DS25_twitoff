@@ -48,10 +48,10 @@ def add_or_update_user(username):
         # tweets is a list of tweet objects
         for tweet in tweets:
             # type(tweet) == object
-            tweet_vector = vectorize_tweet(tweet.text)
+            tweet_vector = vectorize_tweet(tweet.full_text)
             db_tweet = Tweet(
                 id=tweet.id,
-                text=tweet.text,
+                text=tweet.full_text,
                 vect=tweet_vector
             )
             db_user.tweets.append(db_tweet)
